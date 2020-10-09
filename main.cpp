@@ -3,8 +3,10 @@
 #include <string>
 #include <list>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
+
 
 string formattedLine(string singleLine) {
     string formattedString;
@@ -51,13 +53,26 @@ int main() {
     file.close();
 
     contents.sort();
-    cout << contents.front() << endl;
-    cout << contents.back();
+
+
+    string ipInicial = "02107267477:5984 Failed password for illegal user guest";
+
+    string ipFinal = "78008485375:4848 Illegal user";
+
+    list<string>::iterator start;
+    list<string>::iterator end;
+
+    start = find(contents.begin(), contents.end(), ipInicial);
+
+    // cout << *start << '\n';
+
+    end = find(contents.begin(), contents.end(), ipFinal);
+
 
     ofstream sorted("result.txt", ios::binary);
-    for (auto v : contents) {
-        sorted << v << endl; // Here we output the information for all the events in between our max and min dates
-    }
+    for (list<string>::iterator i = start; i != end; i++)
+        sorted << *i << endl;
 
+    sorted << *end << endl;
     return 0;
 }
